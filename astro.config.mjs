@@ -6,7 +6,7 @@ import sitemap from '@astrojs/sitemap';
 
 // TODO: reemplazar por el dominio final del proyecto (requerido para
 // canonical, Open Graph, sitemap.xml y robots.txt correctos en producción).
-const SITE_URL = 'https://talentosinfronteras.example.org';
+const SITE_URL = 'https://giz-landing.vercel.app/';
 
 // https://astro.build/config
 export default defineConfig({
