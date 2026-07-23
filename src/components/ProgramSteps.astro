@@ -1,0 +1,137 @@
+---
+import Icon from "./Icon.astro";
+import { PROGRAM_STEPS } from "../data/site";
+import { ACCENTS, type Accent } from "../utils/colors";
+---
+
+<section id="programa" class="diag torn scroll-mt-24 py-20 sm:py-28" style="--diag-color: var(--color-sand); content-visibility: auto">
+  <div class="diag-fill"></div>
+  <div class="wrap">
+    <div data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%] max-w-2xl">
+      <p class="kicker text-teal">{PROGRAM_STEPS.kicker}</p>
+      <h2 class="section-title mt-5 text-teal-deep">{PROGRAM_STEPS.title}</h2>
+      <p class="lead mt-5">{PROGRAM_STEPS.paragraph}</p>
+    </div>
+
+    <ol data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%] route mt-16">
+      {
+        PROGRAM_STEPS.steps.map((step) => {
+          const accent = ACCENTS[step.color as Accent];
+          return (
+            <li class="route-step">
+              <div class={`route-marker ${accent.bg} ${accent.fg}`}>
+                <Icon name={step.icon} size={26} />
+                <span class="route-num" aria-hidden="true">{step.number}</span>
+              </div>
+              <div class="route-card card">
+                <div class={`text-[0.7rem] font-extrabold uppercase tracking-[0.14em] ${accent.text}`}>
+                  Paso {step.number}
+                </div>
+                <h3 class="mt-1.5 text-lg font-extrabold leading-tight text-ink">{step.title}</h3>
+                <p class="mt-2 text-sm leading-relaxed text-ink-soft">{step.description}</p>
+              </div>
+            </li>
+          );
+        })
+      }
+    </ol>
+
+    <p class="mt-12 flex justify-center">
+      <span class="chip bg-white text-teal">
+        <Icon name="sparkles" size={16} />
+        {PROGRAM_STEPS.note}
+      </span>
+    </p>
+  </div>
+</section>
+
+<style>
+  .route {
+    position: relative;
+    display: grid;
+    gap: 2rem;
+  }
+
+  /* Móvil: línea de ruta vertical que pasa por los marcadores */
+  .route::before {
+    content: "";
+    position: absolute;
+    left: 29px;
+    top: 24px;
+    bottom: 24px;
+    border-left: 2px dashed rgba(11, 114, 133, 0.4);
+  }
+
+  .route-step {
+    position: relative;
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1.25rem;
+    align-items: start;
+  }
+
+  .route-marker {
+    position: relative;
+    width: 60px;
+    height: 60px;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow:
+      0 0 0 6px var(--color-sand),
+      0 8px 18px rgba(0, 0, 0, 0.18);
+    z-index: 1;
+  }
+
+  .route-num {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 22px;
+    height: 22px;
+    padding-inline: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    background: #fff;
+    color: var(--color-ink);
+    font-family: var(--font-display);
+    font-size: 0.7rem;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+
+  .route-card {
+    padding: 1.4rem 1.6rem;
+  }
+
+  /* Escritorio: mapa de ruta horizontal, 4 hitos en fila */
+  @media (min-width: 900px) {
+    .route {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.75rem;
+      align-items: start;
+    }
+
+    .route::before {
+      left: 12.5%;
+      right: 12.5%;
+      top: 30px;
+      bottom: auto;
+      border-left: none;
+      border-top: 2px dashed rgba(11, 114, 133, 0.4);
+    }
+
+    .route-step {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      text-align: center;
+      gap: 1.5rem;
+    }
+
+    .route-card {
+      text-align: center;
+    }
+  }
+</style>

@@ -1,0 +1,100 @@
+---
+import { Image } from "astro:assets";
+import Button from "./Button.astro";
+import { HERO, whatsappHref } from "../data/site";
+import heroImage from "../assets/images/hero-family.png";
+
+// Resalta la última palabra del titular ("oportunidad") sin fijar la copia:
+// si el título cambia, sigue destacando la palabra final.
+const words = HERO.title.trim().split(/\s+/);
+const lastWord = words.pop() ?? "";
+const leadWords = words.join(" ");
+---
+
+<!-- isolate: confina los z-index internos (foto, fundidos, ruta) para que no
+     se pinten por encima de la sección siguiente (la costura del fondo amarillo
+     de EligibilityBar sube sobre este borde). -->
+<section id="hero" class="hero relative isolate overflow-hidden bg-teal-deep text-white">
+  <!-- Foto de ambiente: contenida a tamaño casi nativo (sin estirar) para
+       conservar nitidez; el archivo fuente es 918×666, así que no se amplía
+       más allá de ~1.08× y se funde con el teal mediante los degradados. -->
+    <!-- Sin animate-fade-in: la animación empieza con opacity:0 y retrasa
+         el paint del LCP aunque la imagen ya esté descargada y decodificada. -->
+    <div class="absolute inset-0 z-0 flex items-end justify-center lg:justify-end">
+    <Image
+      src={heroImage}
+      alt={HERO.imageAlt}
+      loading="eager"
+      fetchpriority="high"
+      widths={[320, 420, 480, 560, 640, 768, 918]}
+      sizes="(min-width:1024px) 500px, (min-width:640px) 65vw, 55vw"
+      class="h-auto w-auto max-h-[44vh] max-w-full object-contain object-bottom lg:max-h-[min(84vh,720px)]"
+    />
+  </div>
+
+  <!-- Fundido con el teal — móvil (vertical): texto legible arriba, foto abajo -->
+  <div
+    class="pointer-events-none absolute inset-0 z-1 md:hidden"
+    style="background:linear-gradient(180deg,#073e48 0%,#073e48 38%,rgba(7,62,72,.82) 66%,rgba(7,62,72,.55) 100%)"
+    aria-hidden="true"
+  >
+  </div>
+  <!-- Fundido con el teal — escritorio: se disuelve el borde izquierdo y superior
+       de la foto para que no se note el recuadro y quede de ambiente. -->
+  <div
+    class="pointer-events-none absolute inset-0 z-1 hidden md:block"
+    style="background:linear-gradient(103deg,#073e48 0%,#073e48 36%,rgba(7,62,72,.85) 50%,rgba(7,62,72,.42) 72%,rgba(7,62,72,.12) 100%),linear-gradient(180deg,#073e48 0%,rgba(7,62,72,.45) 22%,rgba(7,62,72,0) 46%)"
+    aria-hidden="true"
+  >
+  </div>
+
+  <!-- Ruta decorativa: el "trayecto" que hilvana la página -->
+  <svg
+    class="pointer-events-none absolute inset-0 z-2 h-full w-full opacity-[0.12]"
+    viewBox="0 0 1200 700"
+    preserveAspectRatio="xMidYMid slice"
+    aria-hidden="true"
+  >
+    <path
+      d="M-40 120 C 240 60, 360 300, 620 260 S 1040 120, 1300 320"
+      fill="none"
+      stroke="var(--color-yellow)"
+      stroke-width="3"
+      stroke-dasharray="2 16"
+      stroke-linecap="round"
+    ></path>
+  </svg>
+
+  <div class="wrap relative z-10 flex items-center pt-32 pb-20 lg:min-h-[90vh] lg:pt-36 lg:pb-24">
+    <div class="max-w-2xl">
+      <p class="kicker animate-fade-in text-yellow">{HERO.kicker}</p>
+
+      <h1 class="title-display mt-6 text-[clamp(1.9rem,1.2rem+3.9vw,5.25rem)]">
+        <span class="animate-fade-in-up inline-block">{leadWords}&nbsp;</span>
+        <span class="animate-fade-in-up animate-delay-150 relative inline-block text-yellow">
+          {lastWord}
+          <svg class="absolute -bottom-2 left-0 w-full" height="14" viewBox="0 0 200 14" preserveAspectRatio="none" aria-hidden="true">
+            <path d="M2 9 C 60 3, 140 3, 198 8" fill="none" stroke="var(--color-coral)" stroke-width="4" stroke-linecap="round"></path>
+          </svg>
+        </span>
+      </h1>
+
+      <p class="animate-fade-in-up animate-delay-300 mt-8 max-w-lg text-lg leading-relaxed text-white/90">
+        {HERO.paragraph}
+      </p>
+
+      <div class="animate-fade-in-up animate-delay-500 mt-9 flex flex-wrap gap-3.5">
+        <Button href="#inscripcion" variant="coral">Quiero participar</Button>
+        <Button href={whatsappHref()} variant="outline" target="_blank" rel="noopener">
+          Escríbenos por WhatsApp
+        </Button>
+      </div>
+
+      <div class="animate-fade-in animate-delay-700 mt-9 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm font-semibold text-white/80">
+        <span class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-yellow"></span> 100% gratuito</span>
+        <span class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-coral"></span> Formación certificada</span>
+        <span class="flex items-center gap-2"><span class="h-1.5 w-1.5 rounded-full bg-white"></span> Cúcuta · Bucaramanga · Bogotá</span>
+      </div>
+    </div>
+  </div>
+</section>

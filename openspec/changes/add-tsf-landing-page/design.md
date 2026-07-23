@@ -84,6 +84,16 @@ Fotos y logos en `src/assets/` procesados a AVIF/WebP responsive. La foto del he
 
 Sin JS: acordeón nativo estilizado, primera pregunta abierta por defecto. Accesible por teclado de fábrica. Alternativa (ARIA accordion con JS) descartada por complejidad innecesaria.
 
+### D11 — `coral-strong`: una sombra derivada para texto sobre coral (descubierta en implementación)
+
+Calculando contraste WCAG durante la implementación se encontró que el coral de marca (`#FF6A4A`) sobre blanco, y blanco sobre coral, dan ~2.83:1 — muy por debajo del 4.5:1 exigido por `seo-accessibility` para texto normal (y del propio 3:1 de texto grande). Lo mismo ocurre con el amarillo de marca (`#F8CA2E`) usado como color de texto (1.56:1 sobre blanco). Estos colores fueron diseñados como acentos visuales, no para llevar texto directamente.
+
+Se añadió un token derivado `--color-coral-strong: #B24A34` (≥4.5:1 sobre blanco y sobre el fondo gris claro `#f4f3f0`) para: fondo de `.btn-coral`, fondo de la sección de inscripción, botón flotante de WhatsApp, y como color de texto/acento (`ACCENTS.coral`). El token `--color-coral` original permanece intacto para usos decorativos sin texto encima (bordes superiores de tarjetas). Para amarillo, en vez de inventar un tono "amarillo oscuro" que dejaría de leerse como amarillo, el rol de texto de `ACCENTS.yellow` se reasignó a `ink` (ya usado como su pareja de fondo). Dos grises de Tailwind (`neutral-400`, `neutral-500`) también se oscurecieron a `neutral-600` donde fallaban (2.58:1 y 4.27:1 respectivamente).
+
+Alternativa descartada: mantener los colores de marca exactos y agrandar/oscurecer solo el texto (variar tamaño para calificar como "texto grande" con umbral 3:1) — se descartó porque exigía agrandar el texto de todos los botones del sitio de forma perceptible, un cambio visual mayor para un problema que se resuelve con un solo tono derivado.
+
+Los valores exactos de `brand-theme/spec.md` (`--color-coral: #FF6A4A`, etc.) no cambian; `coral-strong` es una adición, no una modificación de esos requirements.
+
 ## Risks / Trade-offs
 
 - **[Lemon Milk solo tiene mayúsculas y sin acentos garantizados]** → Se usa exclusivamente en títulos uppercase (como indica el manual); cualquier texto con minúsculas o caracteres fuera de su cobertura cae al fallback Montserrat del mismo stack. Verificar en implementación que "¿", "É", "Ú" rendericen bien en los titulares.

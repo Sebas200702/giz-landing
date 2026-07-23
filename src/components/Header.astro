@@ -1,0 +1,151 @@
+---
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+import { NAV_LINKS } from "../data/site";
+import logo from "../assets/images/logo-tsf.png";
+import { Image } from "astro:assets";
+---
+
+<a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+<header id="site-header" class="site-header fixed inset-x-0 top-0 z-50">
+  <input type="checkbox" id="menu-cb" class="sr-only" />
+
+  <nav class="wrap flex items-center justify-between gap-6 py-3.5" aria-label="Navegación principal">
+    <a href="/" class="logo-pill inline-flex flex-none rounded-xl bg-white px-3.5 py-2 shadow-sm transition-transform duration-300 hover:scale-[1.04]">
+      <Image src={logo} alt="Talento sin fronteras" height={64} style={{ height: "32px", width: "auto" }} />
+    </a>
+
+    <ul class="hidden items-center gap-8 text-[0.9rem] lg:flex">
+      {NAV_LINKS.map((link) => (
+        <li><a href={link.href} class="nav-link">{link.label}</a></li>
+      ))}
+    </ul>
+
+    <div class="hidden items-center gap-3 lg:flex">
+      <Button href="#inscripcion" variant="coral" class="min-h-11! px-6! py-2.5!">Regístrate</Button>
+    </div>
+
+    <label
+      for="menu-cb"
+      class="menu-btn inline-flex cursor-pointer items-center justify-center rounded-lg p-2 lg:hidden"
+      aria-label="Abrir o cerrar menú"
+    >
+      <Icon name="menu" size={28} class="menu-icon-open" />
+      <Icon name="close" size={28} class="menu-icon-close hidden" />
+    </label>
+  </nav>
+
+  <div id="mobile-menu" class="mobile-panel" role="dialog" aria-modal="true" aria-label="Menú de navegación">
+    <ul class="wrap flex flex-col gap-1 py-4 text-base font-bold">
+      {NAV_LINKS.map((link) => (
+        <li><a href={link.href} class="block rounded-lg px-3 py-3 hover:bg-ink/5">{link.label}</a></li>
+      ))}
+      <li class="pt-2">
+        <Button href="#inscripcion" variant="coral" class="w-full justify-center">Regístrate</Button>
+      </li>
+    </ul>
+  </div>
+</header>
+
+<style>
+  /* El header pasa de transparente (texto blanco sobre el hero) a fondo papel
+     con texto tinta al hacer scroll. Antes se hacía con una animación
+     scroll-driven (animation-timeline: scroll()), pero anima color / fondo /
+     box-shadow / backdrop-filter —propiedades NO componibles—, así que el
+     navegador las recalculaba en el hilo principal en CADA frame del scroll,
+     generando TBT. Ahora se alterna la clase .is-stuck una sola vez al cruzar
+     el umbral (listener de scroll pasivo en el <script>), con una transición
+     única en lugar de un recálculo continuo. */
+  .site-header {
+    border-bottom: 1px solid transparent;
+    color: #fff;
+    background-color: transparent;
+    /* backdrop-filter queda FUERA de la transición a propósito: interpolar el
+       blur recalcula en cada frame; aplicarlo al instante mientras el fondo
+       hace fade es casi imperceptible y no añade coste al hilo principal. */
+    transition:
+      background-color 0.3s ease,
+      color 0.3s ease,
+      box-shadow 0.3s ease,
+      border-bottom-color 0.3s ease;
+  }
+
+  .site-header.is-stuck {
+    background-color: rgba(250, 246, 238, 0.88);
+    color: var(--color-ink);
+    /* Solo la propiedad estándar: Lightning CSS (Tailwind v4) añade el prefijo
+       -webkit- según los targets. Si se escribe el -webkit- a mano, su dedup
+       descarta la estándar y el blur deja de funcionar en Chrome/Firefox. */
+    backdrop-filter: blur(14px);
+    box-shadow: 0 8px 30px -16px rgba(38, 37, 35, 0.4);
+    border-bottom-color: rgba(38, 37, 35, 0.08);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .site-header {
+      transition: none;
+    }
+  }
+
+  /* Panel móvil: mismo fondo papel que el header. */
+  .mobile-panel {
+    background: rgba(250, 246, 238, 0.98);
+    backdrop-filter: blur(14px);
+    color: var(--color-ink);
+    box-shadow: 0 12px 20px -12px rgba(38, 37, 35, 0.2);
+  }
+
+  @media (width >= 64rem) {
+    #mobile-menu {
+      display: none;
+    }
+  }
+</style>
+
+<style is:global>
+  @media (width < 64rem) {
+    #mobile-menu {
+      display: none;
+    }
+
+    #menu-cb:checked ~ #mobile-menu {
+      display: block !important;
+    }
+
+    #menu-cb:checked ~ nav .menu-icon-open {
+      display: none !important;
+    }
+
+    #menu-cb:checked ~ nav .menu-icon-close {
+      display: block !important;
+    }
+
+    header:has(#menu-cb:checked) {
+      background: rgba(250, 246, 238, 0.88) !important;
+      color: var(--color-ink) !important;
+      backdrop-filter: blur(14px) !important;
+      box-shadow: 0 8px 30px -16px rgba(38, 37, 35, 0.4) !important;
+      border-bottom-color: rgba(38, 37, 35, 0.08) !important;
+    }
+  }
+</style>
+
+<script>
+  // Alterna .is-stuck al cruzar el umbral, una sola vez por cruce. Leer
+  // window.scrollY no fuerza reflow y el listener es pasivo, así que no bloquea
+  // el scroll ni genera el recálculo por frame de la animación scroll-driven.
+  const header = document.getElementById("site-header");
+  if (header) {
+    let stuck = false;
+    const update = () => {
+      const next = window.scrollY > 40;
+      if (next !== stuck) {
+        stuck = next;
+        header.classList.toggle("is-stuck", next);
+      }
+    };
+    update();
+    window.addEventListener("scroll", update, { passive: true });
+  }
+</script>

@@ -1,0 +1,30 @@
+---
+interface Props {
+  href: string;
+  variant?: "coral" | "teal" | "ink" | "yellow" | "outline" | "outline-ink";
+  class?: string;
+  target?: string;
+  rel?: string;
+}
+
+const {
+  href,
+  variant = "coral",
+  class: className = "",
+  target,
+  rel,
+} = Astro.props;
+
+const variantClass = {
+  coral: "btn-coral",
+  teal: "btn-teal",
+  ink: "btn-ink",
+  yellow: "btn-yellow",
+  outline: "btn-outline",
+  "outline-ink": "btn-outline-ink",
+}[variant];
+---
+
+<a href={href} class={`btn ${variantClass} ${className}`} target={target} rel={rel}>
+  <slot />
+</a>

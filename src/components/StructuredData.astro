@@ -1,0 +1,60 @@
+---
+import { SITE } from "../data/site";
+
+// Datos estructurados a nivel de sitio (JSON-LD). Las URLs absolutas salen de
+// `site` en astro.config.mjs — al cambiar el dominio se actualizan solas.
+const siteURL = Astro.site ?? Astro.url;
+const pageURL = new URL(Astro.url.pathname, siteURL).href;
+const logoURL = new URL("/favicon-512.png", siteURL).href;
+const imageURL = new URL("/og-image.jpg", siteURL).href;
+
+const organization = {
+  "@type": "Organization",
+  name: SITE.name,
+  url: siteURL?.href,
+  logo: logoURL,
+  description: SITE.description,
+};
+
+const website = {
+  "@type": "WebSite",
+  name: SITE.name,
+  url: siteURL?.href,
+  inLanguage: "es-CO",
+};
+
+// La formación gratuita de 60 h encaja en el tipo Course de schema.org.
+const course = {
+  "@type": "Course",
+  name: "Formación en habilidades para el empleo y habilidades técnicas",
+  description:
+    "Formación gratuita y certificada de 60 horas, 100% virtual: 20 h de habilidades para el empleo y 40 h de habilidades técnicas (ventas, servicio al cliente y logística).",
+  url: pageURL,
+  inLanguage: "es-CO",
+  isAccessibleForFree: true,
+  provider: {
+    "@type": "Organization",
+    name: SITE.name,
+    sameAs: siteURL?.href,
+  },
+  offers: {
+    "@type": "Offer",
+    price: 0,
+    priceCurrency: "COP",
+    category: "Gratuito",
+  },
+  hasCourseInstance: {
+    "@type": "CourseInstance",
+    courseMode: "online",
+    courseWorkload: "PT60H",
+  },
+};
+
+const graph = [organization, website, course];
+---
+
+<script
+  type="application/ld+json"
+  is:inline
+  set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": graph })}
+/>

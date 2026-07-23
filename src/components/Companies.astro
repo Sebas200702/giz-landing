@@ -1,0 +1,48 @@
+---
+import Icon from "./Icon.astro";
+import Button from "./Button.astro";
+import { COMPANIES, COMPANY_WHATSAPP_MESSAGE, whatsappHref } from "../data/site";
+import { ACCENTS, type Accent } from "../utils/colors";
+---
+
+<section id="empresas" class="diag wave py-20 text-white sm:py-28" style="--diag-color: var(--color-blue); content-visibility: auto">
+  <div class="diag-fill"></div>
+  <!-- Trama de ruta decorativa -->
+  <svg class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.14]" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
+    <path d="M-40 380 C 260 440, 380 160, 640 220 S 1040 440, 1300 200" fill="none" stroke="var(--color-yellow)" stroke-width="3" stroke-dasharray="2 16" stroke-linecap="round"></path>
+  </svg>
+
+  <div class="wrap relative grid gap-12 md:grid-cols-[1.05fr_.95fr] md:items-center md:gap-16">
+    <div data-reveal class="animate-fade-in-right timeline-view animate-range-[entry_0%_cover_30%]">
+      <p class="kicker text-yellow">{COMPANIES.kicker}</p>
+      <h2 class="section-title mt-5 text-white">{COMPANIES.title}</h2>
+      <p class="mt-5 max-w-md text-base leading-relaxed text-white/85">{COMPANIES.paragraph}</p>
+      <Button
+        href={whatsappHref(COMPANY_WHATSAPP_MESSAGE)}
+        variant="coral"
+        class="mt-8"
+        target="_blank"
+        rel="noopener"
+      >
+        {COMPANIES.cta}
+        <Icon name="arrow-right" size={18} />
+      </Button>
+    </div>
+
+    <div data-reveal class="animate-fade-in-left timeline-view animate-range-[entry_10%_cover_40%] animate-delay-200 grid grid-cols-2 gap-4">
+      {
+        COMPANIES.benefits.map((benefit) => {
+          const accent = ACCENTS[benefit.color as Accent];
+          return (
+            <div class="rounded-2xl border border-white/10 bg-white/[0.07] p-6">
+              <div class={`mb-4 flex h-11 w-11 items-center justify-center rounded-xl ${accent.bg} ${accent.fg}`}>
+                <Icon name={benefit.icon} size={22} />
+              </div>
+              <div class="text-sm font-extrabold leading-snug">{benefit.label}</div>
+            </div>
+          );
+        })
+      }
+    </div>
+  </div>
+</section>

@@ -48,6 +48,15 @@ El sistema SHALL proveer un componente de botón reutilizable con forma pill (ra
 - **WHEN** el botón recibe foco por teclado
 - **THEN** muestra un indicador de foco visible con contraste suficiente sobre cualquiera de sus fondos
 
+### Requirement: Sombra accesible para coral sobre texto
+
+El sistema SHALL definir un token derivado `--color-coral-strong` (un tono más oscuro del coral de marca) para usarlo como fondo o color de texto en cualquier contexto donde el coral de marca (`#FF6A4A`) lleve texto encima o esté cubierto de texto, dado que el coral puro no alcanza el contraste 4.5:1 exigido por `seo-accessibility`. El coral de marca original SHALL seguir disponible para usos decorativos sin texto (bordes, subrayados).
+
+#### Scenario: Botón primario legible
+
+- **WHEN** se renderiza un botón con la variante coral (`.btn-coral`)
+- **THEN** su fondo usa `--color-coral-strong`, no el coral de marca puro, y el texto blanco alcanza al menos 4.5:1 de contraste
+
 ### Requirement: Kicker de sección
 
 El sistema SHALL proveer un estilo "kicker" (etiqueta corta sobre el título: mayúsculas, letter-spacing amplio, peso 800, color de acento por sección) reutilizable en todas las secciones que lo usan en el diseño de referencia.

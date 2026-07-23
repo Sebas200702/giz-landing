@@ -1,0 +1,59 @@
+---
+import Icon from "./Icon.astro";
+import { AUDIENCE } from "../data/site";
+import { ACCENTS, type Accent } from "../utils/colors";
+
+// Escalonado del revelado en scroll: los delays de tiempo no aplican a
+// timelines de scroll (view()), así que el desfase se logra con rangos
+// distintos por tarjeta. Clases completas para que Tailwind las detecte.
+const REVEAL_STAGGER = [
+  "animate-range-[entry_0%_cover_30%]",
+  "animate-range-[entry_8%_cover_38%]",
+  "animate-range-[entry_16%_cover_46%]",
+];
+---
+
+<section id="participa" class="scroll-mt-24 py-20 sm:py-28" style="content-visibility: auto">
+  <div class="wrap">
+    <div data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%] grid gap-6 md:grid-cols-[1fr_1fr] md:items-end">
+      <div>
+        <p class="kicker text-coral-strong">{AUDIENCE.kicker}</p>
+        <h2 class="section-title mt-5 text-teal-deep">{AUDIENCE.title}</h2>
+      </div>
+      <p class="lead md:pb-1.5">{AUDIENCE.paragraph}</p>
+    </div>
+
+    <div class="mt-14 grid gap-6 md:grid-cols-3">
+      {
+        AUDIENCE.cards.map((card, i) => {
+          const accent = ACCENTS[card.color as Accent];
+          return (
+            <div
+              data-reveal
+              class={`animate-zoom-in timeline-view card flex flex-col p-7 sm:p-8 ${REVEAL_STAGGER[i % REVEAL_STAGGER.length]}`}
+              style={`animation-delay:${i * 120}ms`}
+            >
+              <span class={`flex h-12 w-12 items-center justify-center rounded-2xl ${accent.bg} ${accent.fg}`}>
+                <Icon name={card.icon} size={24} />
+              </span>
+              <div class={`title-display mt-6 text-4xl leading-none sm:text-[2.6rem] ${accent.text}`}>
+                {card.value}
+              </div>
+              <p class="mt-3 text-[0.95rem] font-semibold leading-snug text-ink-soft">
+                {card.label}
+              </p>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    <div
+      data-reveal
+      class="animate-fade-in-left timeline-view animate-range-[entry_0%_cover_30%] mt-8 flex items-start gap-3 rounded-2xl bg-sand px-6 py-5 text-sm leading-relaxed text-ink-soft"
+    >
+      <span class="mt-0.5 flex-none text-teal"><Icon name="map-pin" size={20} /></span>
+      <p><span class="font-bold text-ink">Cobertura:</span> {AUDIENCE.municipalities}</p>
+    </div>
+  </div>
+</section>

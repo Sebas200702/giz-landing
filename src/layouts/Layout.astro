@@ -1,26 +1,115 @@
 ---
-import '../styles/global.css'
----
-<!doctype html>
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro Basics</title>
-	</head>
-	<body>
-		<slot />
-	</body>
-</html>
+import "../styles/global.css";
+// URLs con hash de las 2 fuentes reales de la página. Se precargan para que
+// bajen en paralelo con el HTML en vez de esperar a que el CSS se parsee
+// (antes se descargaban encadenadas), recortando el render delay del LCP.
+import montserratWoff2 from "@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url";
+import lemonMilkWoff2 from "../assets/fonts/LEMONMILK-Bold.woff2?url";
+import { SITE } from "../data/site";
+import StructuredData from "../components/StructuredData.astro";
 
-<style>
-	html,
-	body {
-		margin: 0;
-		width: 100%;
-		height: 100%;
-	}
-</style>
+// Pre-resuelve la imagen LCP del héroe para inyectar un <link rel="preload">
+// en el <head>. Sin esto el navegador descubre la imagen tarde porque aparece
+// después del <header> (~45 nodos + logo) en el HTML, generando ~180 ms de
+// "resource load delay" que separan la nota de 100.
+import { getImage } from "astro:assets";
+import heroImage from "../assets/images/hero-family.png";
+
+// IMPORTANTE: widths y sizes deben ser IDÉNTICOS a los del <Image> del Hero
+// (src/components/Hero.astro). Si difieren, el navegador precargaría una URL
+// que el <img> no vuelve a pedir y la imagen se descargaría dos veces.
+const heroImg = await getImage({
+  src: heroImage,
+  widths: [320, 420, 480, 560, 640, 768, 918],
+  sizes: "(min-width:1024px) 500px, (min-width:640px) 65vw, 55vw",
+});
+
+interface Props {
+  title?: string;
+  description?: string;
+  image?: string;
+}
+
+const {
+  title = SITE.title,
+  description = SITE.description,
+  image = "/og-image.jpg",
+} = Astro.props;
+
+const canonicalURL = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site)
+  : Astro.url;
+const socialImageURL = new URL(image, Astro.site ?? Astro.url);
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <!-- La imagen LCP va PRIMERO: en conexiones limitadas (las que emula
+         Lighthouse) debe ganar la conexión antes que las fuentes. Las fuentes
+         usan font-display: swap, así que el texto pinta de inmediato con la de
+         reserva y su descarga no bloquea FCP/LCP. -->
+    <link
+      rel="preload"
+      as="image"
+      href={heroImg.src}
+      imagesrcset={heroImg.srcSet.attribute}
+      imagesizes={heroImg.attributes.sizes}
+      fetchpriority="high"
+    />
+
+    <link
+      rel="preload"
+      href={montserratWoff2}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+    <link
+      rel="preload"
+      href={lemonMilkWoff2}
+      as="font"
+      type="font/woff2"
+      crossorigin
+    />
+
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    <meta
+      name="robots"
+      content="index, follow, max-image-preview:large, max-snippet:-1"
+    />
+    <link rel="canonical" href={canonicalURL} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:image" content={socialImageURL} />
+    <meta property="og:image:type" content="image/jpeg" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:url" content={canonicalURL} />
+    <meta property="og:locale" content="es_CO" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={socialImageURL} />
+
+    <StructuredData />
+
+    <slot name="head" />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>

@@ -1,0 +1,23 @@
+---
+import { ELIGIBILITY_TEXT } from "../data/site";
+
+// La cadena viene separada por " · " — la troceamos en segmentos para
+// maquetarla como una franja tipo "boleto" con marcadores de ruta.
+const segments = ELIGIBILITY_TEXT.split("·").map((s) => s.trim()).filter(Boolean);
+---
+
+<div class="diag perf text-ink" style="--diag-color: var(--color-yellow)">
+  <div class="diag-fill"></div>
+  <ul class="wrap relative flex flex-wrap items-center justify-center gap-x-3 gap-y-1.5 py-5 text-center text-sm font-bold tracking-tight sm:text-[0.95rem]">
+    {
+      segments.map((seg, i) => (
+        <>
+          {i > 0 && (
+            <li aria-hidden="true" class="h-1.5 w-1.5 flex-none rounded-full bg-ink/40" />
+          )}
+          <li>{seg}</li>
+        </>
+      ))
+    }
+  </ul>
+</div>

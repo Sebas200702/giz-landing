@@ -1,0 +1,70 @@
+---
+import { Image } from "astro:assets";
+import { SITE, NAV_LINKS } from "../data/site";
+import logo from "../assets/images/logo-tsf.png";
+import partnerLogos from "../assets/images/partner-logos.png";
+import fciLogo from "../assets/images/logo-fci.png";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-grain bg-ink pt-16 pb-8 text-white">
+  <div class="wrap">
+    <div class="grid gap-10 pb-12 md:grid-cols-[1.4fr_0.8fr_1.3fr] md:gap-12">
+      <div class="max-w-xs">
+        <div class="mb-5 inline-flex rounded-xl bg-white px-5 py-3.5">
+          <Image
+            src={logo}
+            alt="Talento sin fronteras"
+
+            width={260}
+            style={{ height: "40px", width: "auto" }}
+          />
+        </div>
+        <p class="text-sm leading-relaxed text-white/60">{SITE.tagline}</p>
+      </div>
+
+      <nav aria-label="Enlaces del pie de página">
+        <div class="mb-4 text-xs font-bold uppercase tracking-[0.14em] text-white/40">Navegación</div>
+        <ul class="flex flex-col gap-3 text-sm font-semibold">
+          {
+            NAV_LINKS.map((link) => (
+              <li>
+                <a href={link.href} class="text-white/75 transition-colors hover:text-yellow">
+                  {link.label}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+      </nav>
+
+      <div>
+        <div class="mb-4 text-xs font-bold uppercase tracking-[0.14em] text-white/40">Con el apoyo de</div>
+        <div class="flex flex-wrap items-center gap-3.5">
+          <div class="rounded-xl bg-white px-5 py-4">
+            <Image
+              src={partnerLogos}
+              alt="Cooperación alemana · Unión Europea · GIZ"
+              width={400}
+              style={{ height: "48px", width: "auto" }}
+            />
+          </div>
+          <div class="rounded-xl bg-white px-5 py-4">
+            <Image
+              src={fciLogo}
+              alt="Fundación Colombia Incluyente"
+              width={300}
+              style={{ height: "48px", width: "auto" }}
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-2 border-t border-white/10 pt-6 text-xs text-white/40 sm:flex-row sm:items-center sm:justify-between">
+      <span>© {year} {SITE.name}</span>
+      <span>Hecho con enfoque de género e inclusión.</span>
+    </div>
+  </div>
+</footer>

@@ -1,1 +1,443 @@
 @import "tailwindcss";
+@import "@fontsource-variable/montserrat";
+@import "tailwind-animations";
+
+@font-face {
+  font-family: "Lemon Milk";
+  src: url("../assets/fonts/LEMONMILK-Bold.woff2") format("woff2");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+@theme {
+  /* Marca */
+  --color-teal: #0b7285;
+  --color-teal-deep: #073e48;
+  --color-blue: #003399;
+  --color-yellow: #f8ca2e;
+  --color-coral: #ff6a4a;
+  /* Sombra oscurecida del coral de marca: el coral puro (#FF6A4A) no alcanza
+     4.5:1 con blanco ni con fondos claros (WCAG 2.1 AA). Se usa en botones,
+     texto de acento y fondos con texto; el coral puro queda para acentos
+     decorativos (bordes, chips) donde el contraste de texto no aplica. */
+  --color-coral-strong: #b24a34;
+  --color-ink: #262523;
+  --color-ink-soft: #57534d;
+
+  /* Superficies cálidas — reemplazan el gris frío del diseño anterior */
+  --color-paper: #faf6ee;
+  --color-sand: #f1e8d8;
+
+  --font-display: "Lemon Milk", "Montserrat Variable", "Montserrat", system-ui, sans-serif;
+  --font-sans: "Montserrat Variable", "Montserrat", system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    scroll-padding-top: 88px;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-ink);
+    background: var(--color-paper);
+    /* Grano cálido a nivel de página: da textura de papel sin imágenes. */
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  ::selection {
+    background: var(--color-yellow);
+    color: var(--color-ink);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--color-blue);
+    outline-offset: 3px;
+    border-radius: 4px;
+  }
+
+  /* Salto al contenido — visible solo al enfocar (usuarios de teclado) */
+  .skip-link {
+    position: absolute;
+    top: -100%;
+    left: 1rem;
+    z-index: 100;
+    padding: 0.7rem 1.25rem;
+    background: var(--color-teal);
+    color: #fff;
+    font-weight: 800;
+    font-size: 0.875rem;
+    text-decoration: none;
+    border-radius: 0 0 10px 10px;
+    transition: top 0.15s ease;
+  }
+
+  .skip-link:focus {
+    top: 0;
+  }
+}
+
+@layer components {
+  /* ---------- Sistema de layout ---------- */
+  .wrap {
+    max-width: 1200px;
+    margin-inline: auto;
+    padding-inline: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .wrap {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  /* ---------- Tipografía editorial ---------- */
+  /* Kicker con índice: "01 —— QUÉ OFRECEMOS" */
+  .kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.7rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    font-size: 0.75rem;
+  }
+
+  .kicker::before {
+    content: "";
+    width: 2.25rem;
+    height: 2px;
+    background: currentColor;
+    border-radius: 2px;
+    opacity: 0.85;
+  }
+
+  .title-display {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.005em;
+    line-height: 0.98;
+    text-wrap: balance;
+  }
+
+  /* Título de sección estándar con ritmo consistente */
+  .section-title {
+    font-family: var(--font-display);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.0;
+    letter-spacing: 0.005em;
+    font-size: clamp(1.9rem, 1.1rem + 3vw, 3rem);
+    text-wrap: balance;
+  }
+
+  .lead {
+    font-size: clamp(1rem, 0.95rem + 0.4vw, 1.15rem);
+    line-height: 1.65;
+    color: var(--color-ink-soft);
+  }
+
+  /* ---------- Botones ---------- */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5625rem;
+    min-height: 48px;
+    padding: 0.95rem 1.75rem;
+    border-radius: 9999px;
+    font-weight: 800;
+    font-size: 0.875rem;
+    text-transform: uppercase;
+    letter-spacing: 0.045em;
+    text-decoration: none;
+    border: 2px solid transparent;
+    box-shadow: 0 1px 2px rgba(38, 37, 35, 0.08);
+    transition:
+      transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+      box-shadow 0.25s ease,
+      filter 0.15s ease,
+      background-color 0.15s ease,
+      color 0.15s ease;
+  }
+
+  .btn:hover {
+    transform: translateY(-3px);
+    filter: brightness(1.04);
+    box-shadow: 0 16px 30px -12px rgba(38, 37, 35, 0.4);
+  }
+
+  .btn:active {
+    transform: translateY(-1px) scale(0.985);
+    transition-duration: 0.08s;
+  }
+
+  .btn-coral {
+    background-color: var(--color-coral-strong);
+    color: #fff;
+  }
+
+  .btn-teal {
+    background-color: var(--color-teal);
+    color: #fff;
+  }
+
+  .btn-ink {
+    background-color: var(--color-ink);
+    color: #fff;
+  }
+
+  .btn-yellow {
+    background-color: var(--color-yellow);
+    color: var(--color-ink);
+  }
+
+  /* Contorno claro (sobre fondos oscuros) */
+  .btn-outline {
+    background-color: transparent;
+    color: #fff;
+    border-color: rgba(255, 255, 255, 0.7);
+  }
+
+  .btn-outline:hover {
+    background-color: rgba(255, 255, 255, 0.12);
+  }
+
+  /* Contorno oscuro (sobre fondos claros) */
+  .btn-outline-ink {
+    background-color: transparent;
+    color: var(--color-ink);
+    border-color: rgba(38, 37, 35, 0.25);
+  }
+
+  .btn-outline-ink:hover {
+    background-color: rgba(38, 37, 35, 0.05);
+  }
+
+  /* ---------- Tarjetas ---------- */
+  .card {
+    background: #fff;
+    border: 1px solid rgba(38, 37, 35, 0.08);
+    border-radius: 20px;
+    box-shadow: 0 1px 0 rgba(38, 37, 35, 0.04);
+  }
+
+  /* ---------- Chip ---------- */
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 9999px;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    background: #fff;
+    border: 1px solid rgba(38, 37, 35, 0.1);
+  }
+
+  /* ---------- Enlaces de navegación ---------- */
+  .nav-link {
+    position: relative;
+    padding-block: 0.2rem;
+    font-weight: 700;
+  }
+
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    inset-inline: 0;
+    bottom: -3px;
+    height: 2px;
+    background: var(--color-yellow);
+    border-radius: 2px;
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .nav-link:hover::after,
+  .nav-link:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  /* ---------- Costuras entre secciones ----------
+     Rompen la retícula rectangular sin repetir fórmula. La sección lleva
+     .diag (contexto aislado, sin recorte) y un hijo .diag-fill cuyo color
+     rebosa ~1 borde hacia las secciones vecinas mientras el contenido sigue
+     recto y legible. Cada costura usa una variante distinta:
+       · .perf     — perforación de boleto (muescas semicirculares)
+       · .torn     — borde rasgado de papel (máscara SVG en dientes)
+       · .wave     — onda suave (máscara SVG con curvas)
+       · .rect     — rectángulo: bordes rectos ajustados a la sección
+       · .bubbles  — hilera de burbujas semicirculares (máscara SVG con arcos)
+     La profundidad se controla con --s y clamp() para no dispararse en
+     pantallas anchas. Sin soporte de máscaras el relleno queda rectangular,
+     igual que el diseño plano. */
+  .diag {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .diag > .diag-fill {
+    --s: clamp(2rem, 3.5vw, 4.5rem);
+    content: "";
+    position: absolute;
+    inset: calc(var(--s) * -1) 0;
+    z-index: -1;
+    pointer-events: none;
+    background: var(--diag-color);
+  }
+
+  /* Perforación de boleto: muescas semicirculares regulares mordidas en los
+     bordes (radial-gradients en mosaico), como un ticket rasgable. */
+  .perf > .diag-fill {
+    --s: clamp(1.5rem, 2.5vw, 2.25rem);
+    -webkit-mask-image:
+      radial-gradient(circle 7px at 50% 0%, transparent 6.5px, #000 7.5px),
+      radial-gradient(circle 7px at 50% 100%, transparent 6.5px, #000 7.5px),
+      linear-gradient(#000 0 0);
+    mask-image:
+      radial-gradient(circle 7px at 50% 0%, transparent 6.5px, #000 7.5px),
+      radial-gradient(circle 7px at 50% 100%, transparent 6.5px, #000 7.5px),
+      linear-gradient(#000 0 0);
+    -webkit-mask-repeat: repeat-x, repeat-x, no-repeat;
+    mask-repeat: repeat-x, repeat-x, no-repeat;
+    -webkit-mask-size:
+      26px var(--s),
+      26px var(--s),
+      100% calc(100% - var(--s) * 2);
+    mask-size:
+      26px var(--s),
+      26px var(--s),
+      100% calc(100% - var(--s) * 2);
+    -webkit-mask-position: center top, center bottom, center;
+    mask-position: center top, center bottom, center;
+  }
+
+  /* Máscaras de borde con bandas SVG (preserveAspectRatio="none"): dibujan el
+     borde superior e inferior y un gradiente central une ambas. */
+  .torn > .diag-fill,
+  .wave > .diag-fill,
+  .bubbles > .diag-fill {
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    -webkit-mask-size:
+      100% var(--s),
+      100% var(--s),
+      100% calc(100% - var(--s) * 2);
+    mask-size:
+      100% var(--s),
+      100% var(--s),
+      100% calc(100% - var(--s) * 2);
+    -webkit-mask-position: center top, center bottom, center;
+    mask-position: center top, center bottom, center;
+  }
+
+  /* Rasgado de papel: dientes irregulares arriba y abajo */
+  .torn > .diag-fill {
+    --s: clamp(1.25rem, 2.5vw, 2.75rem);
+    -webkit-mask-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100V46L70 60L155 24L235 54L330 28L405 62L505 18L595 50L680 26L775 58L865 30L965 56L1050 22L1145 52L1225 28L1330 58L1440 32V100Z'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V54L1350 32L1270 66L1180 38L1085 70L1000 42L905 74L815 36L725 64L640 34L550 68L460 40L370 72L285 44L195 70L110 38L0 62Z'/%3E%3C/svg%3E"),
+      linear-gradient(#000 0 0);
+    mask-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100V46L70 60L155 24L235 54L330 28L405 62L505 18L595 50L680 26L775 58L865 30L965 56L1050 22L1145 52L1225 28L1330 58L1440 32V100Z'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V54L1350 32L1270 66L1180 38L1085 70L1000 42L905 74L815 36L725 64L640 34L550 68L460 40L370 72L285 44L195 70L110 38L0 62Z'/%3E%3C/svg%3E"),
+      linear-gradient(#000 0 0);
+  }
+
+  /* Onda suave: curva en S arriba y abajo */
+  .wave > .diag-fill {
+    --s: clamp(2.5rem, 5vw, 6rem);
+    -webkit-mask-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100V62C240 12 480 12 720 52C960 92 1200 92 1440 44V100Z'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V48C1200 92 960 92 720 50C480 8 240 8 0 56Z'/%3E%3C/svg%3E"),
+      linear-gradient(#000 0 0);
+    mask-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100V62C240 12 480 12 720 52C960 92 1200 92 1440 44V100Z'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V48C1200 92 960 92 720 50C480 8 240 8 0 56Z'/%3E%3C/svg%3E"),
+      linear-gradient(#000 0 0);
+  }
+
+  /* Rectángulo: sin rebose hacia las vecinas, costuras horizontales rectas
+     exactamente en los límites de la sección. */
+  .rect > .diag-fill {
+    inset: 0;
+  }
+
+  /* Burbujas: hilera de semicírculos de radios variables asomando en los
+     bordes (arcos SVG), como globos de conversación. */
+  .bubbles > .diag-fill {
+    --s: clamp(2.25rem, 4vw, 4.5rem);
+    -webkit-mask-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100V55A45 45 0 0 1 90 55A55 55 0 0 1 200 55A36 36 0 0 1 272 55A50 50 0 0 1 372 55A42 42 0 0 1 456 55A38 38 0 0 1 532 55A54 54 0 0 1 640 55A46 46 0 0 1 732 55A35 35 0 0 1 802 55A52 52 0 0 1 906 55A40 40 0 0 1 986 55A55 55 0 0 1 1096 55A48 48 0 0 1 1192 55A44 44 0 0 1 1280 55A40 40 0 0 1 1360 55A40 40 0 0 1 1440 55V100Z'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V45A40 40 0 0 0 1360 45A40 40 0 0 0 1280 45A44 44 0 0 0 1192 45A48 48 0 0 0 1096 45A55 55 0 0 0 986 45A40 40 0 0 0 906 45A52 52 0 0 0 802 45A35 35 0 0 0 732 45A46 46 0 0 0 640 45A54 54 0 0 0 532 45A38 38 0 0 0 456 45A42 42 0 0 0 372 45A50 50 0 0 0 272 45A36 36 0 0 0 200 45A55 55 0 0 0 90 45A45 45 0 0 0 0 45Z'/%3E%3C/svg%3E"),
+      linear-gradient(#000 0 0);
+    mask-image:
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 100V55A45 45 0 0 1 90 55A55 55 0 0 1 200 55A36 36 0 0 1 272 55A50 50 0 0 1 372 55A42 42 0 0 1 456 55A38 38 0 0 1 532 55A54 54 0 0 1 640 55A46 46 0 0 1 732 55A35 35 0 0 1 802 55A52 52 0 0 1 906 55A40 40 0 0 1 986 55A55 55 0 0 1 1096 55A48 48 0 0 1 1192 55A44 44 0 0 1 1280 55A40 40 0 0 1 1360 55A40 40 0 0 1 1440 55V100Z'/%3E%3C/svg%3E"),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 100' preserveAspectRatio='none'%3E%3Cpath d='M0 0H1440V45A40 40 0 0 0 1360 45A40 40 0 0 0 1280 45A44 44 0 0 0 1192 45A48 48 0 0 0 1096 45A55 55 0 0 0 986 45A40 40 0 0 0 906 45A52 52 0 0 0 802 45A35 35 0 0 0 732 45A46 46 0 0 0 640 45A54 54 0 0 0 532 45A38 38 0 0 0 456 45A42 42 0 0 0 372 45A50 50 0 0 0 272 45A36 36 0 0 0 200 45A55 55 0 0 0 90 45A45 45 0 0 0 0 45Z'/%3E%3C/svg%3E"),
+      linear-gradient(#000 0 0);
+  }
+
+  /* ---------- Grano sutil sobre color sólido ---------- */
+  .bg-grain {
+    position: relative;
+    isolation: isolate;
+  }
+
+  .bg-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    opacity: 0.5;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .bg-grain > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+/* ---- Revelado en scroll: CSS puro, sin JS ----
+   Los elementos [data-reveal] combinan animate-fade-in-up del plugin
+   tailwind-animations (fill-mode: both) con las utilidades timeline-view y
+   animate-range-* (scroll-driven animations): la animación avanza a medida
+   que el elemento entra en el viewport. El escalonado se logra con rangos
+   distintos (los delays de tiempo no aplican a timelines de scroll).
+   En navegadores sin soporte estas propiedades se ignoran y la animación
+   simplemente se reproduce al cargar la página (contenido siempre visible). */
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  [data-reveal] {
+    animation: none !important;
+    opacity: 1 !important;
+    transform: none !important;
+    filter: none !important;
+  }
+}

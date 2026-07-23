@@ -1,0 +1,86 @@
+---
+import Icon from "./Icon.astro";
+import { CURRICULUM } from "../data/site";
+import { ACCENTS, type Accent } from "../utils/colors";
+
+// Escalonado del revelado en scroll: los delays de tiempo no aplican a
+// timelines de scroll (view()), así que el desfase se logra con rangos
+// distintos por tarjeta. Clases completas para que Tailwind las detecte.
+const REVEAL_STAGGER = [
+  "animate-range-[entry_0%_cover_30%]",
+  "animate-range-[entry_8%_cover_38%]",
+  "animate-range-[entry_16%_cover_46%]",
+];
+---
+
+<section id="temario" class="scroll-mt-24 py-20 sm:py-28" style="content-visibility: auto">
+  <div class="wrap">
+    <div data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%] max-w-2xl">
+      <p class="kicker text-coral-strong">{CURRICULUM.kicker}</p>
+      <h2 class="section-title mt-5 text-teal-deep">{CURRICULUM.title}</h2>
+      <p class="lead mt-5">{CURRICULUM.paragraph}</p>
+    </div>
+
+    <!-- Bloque 1 · Habilidades para el empleo -->
+    <div data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%] card mt-14 overflow-hidden">
+      <div class="border-l-[6px] border-teal p-7 sm:p-9">
+        <div class="mb-6 inline-flex items-center gap-2 rounded-full bg-teal/10 px-4 py-1.5 text-xs font-extrabold uppercase tracking-[0.1em] text-teal">
+          {CURRICULUM.skillsLabel}
+        </div>
+        <div class="grid gap-x-8 gap-y-3.5 text-[0.95rem] font-medium text-ink sm:grid-cols-2 lg:grid-cols-3">
+          {
+            CURRICULUM.skillsTopics.map((topic) => (
+              <div class="flex items-start gap-2.5">
+                <span class="mt-1 flex-none text-teal"><Icon name="arrow-right" size={16} strokeWidth={2.6} /></span>
+                <span>{topic}</span>
+              </div>
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <!-- Bloque 2 · Habilidades técnicas -->
+    <div class="mt-12 flex items-center gap-4">
+      <p class="text-xs font-extrabold uppercase tracking-[0.1em] text-coral-strong">{CURRICULUM.technicalLabel}</p>
+      <span class="h-px flex-1 bg-ink/12" aria-hidden="true"></span>
+    </div>
+
+    <div class="mt-6 grid gap-6 lg:grid-cols-3">
+      {
+        CURRICULUM.modules.map((mod, i) => {
+          const accent = ACCENTS[mod.color as Accent];
+          return (
+            <div
+              data-reveal
+              class={`animate-zoom-in timeline-view card flex flex-col p-7 ${REVEAL_STAGGER[i % REVEAL_STAGGER.length]}`}
+              style={`animation-delay:${i * 100}ms`}
+            >
+              <div class="flex items-center gap-4">
+                <span class={`flex h-12 w-12 flex-none items-center justify-center rounded-2xl ${accent.bg} ${accent.fg}`}>
+                  <Icon name={mod.icon} size={24} />
+                </span>
+                <div class={`text-[0.7rem] font-extrabold uppercase tracking-[0.12em] ${accent.text}`}>
+                  {mod.badge}
+                </div>
+              </div>
+              <h3 class="title-display mt-5 mb-5 text-xl text-ink">{mod.title}</h3>
+              <ul class="flex flex-col gap-2.5 text-[0.85rem] leading-snug text-ink-soft">
+                {mod.items.map((item) => (
+                  <li class="flex gap-2.5">
+                    <span class={`mt-1.5 h-1.5 w-1.5 flex-none rounded-full ${accent.bg}`} aria-hidden="true" />
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          );
+        })
+      }
+    </div>
+
+    <div data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%] mt-10 flex flex-wrap justify-center gap-3">
+      {CURRICULUM.chips.map((chip) => <span class="chip">{chip}</span>)}
+    </div>
+  </div>
+</section>
