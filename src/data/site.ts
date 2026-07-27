@@ -15,10 +15,10 @@ export const SITE = {
 };
 
 export const NAV_LINKS = [
-  { label: "Participa", href: "#participa" },
-  { label: "Programa", href: "#programa" },
-  { label: "Empresas", href: "#empresas" },
-  { label: "Preguntas", href: "#preguntas" },
+  { label: "¿Es para ti?", href: "#participa" },
+  { label: "Qué ofrecemos", href: "#programa" },
+  { label: "Para empresas", href: "#empresas" },
+  { label: "Preguntas frecuentes", href: "#preguntas" },
 ];
 
 export const HERO = {
