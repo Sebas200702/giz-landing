@@ -4,7 +4,9 @@ import { PROGRAM_STEPS } from "../data/site";
 import { ACCENTS, type Accent } from "../utils/colors";
 ---
 
-<section id="programa" class="diag torn scroll-mt-24 py-20 sm:py-28" style="--diag-color: var(--color-sand); content-visibility: auto">
+<!-- Sin content-visibility:auto: la contención de pintado que implica recorta
+     el desborde de .diag-fill (el rasgado de la costura), dejando el borde recto. -->
+<section id="programa" class="diag torn scroll-mt-24 py-20 sm:py-28" style="--diag-color: var(--color-sand)">
   <div class="diag-fill"></div>
   <div class="wrap">
     <div data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%] max-w-2xl">

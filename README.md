@@ -32,8 +32,7 @@ Una sola página (`/`) con las siguientes secciones:
 8. **Companies** — Sección para empresas aliadas
 9. **Registration** — Formulario Zoho Forms embebido
 10. **FAQ** — Acordeón accesible con `<details>`/`<summary>`
-11. **WhatsApp Band** — Llamado a contacto por WhatsApp
-12. **Footer** — Logos de organizaciones aliadas
+11. **Footer** — Logos de organizaciones aliadas
 
 ## Estructura del proyecto
 
@@ -50,7 +49,7 @@ src/
 
 ## Construcción
 
-El sitio se compila en `./dist/` como HTML, CSS y assets estáticos. Sin JavaScript en el bundle del cliente, excepto dos scripts ligeros (menú móvil y botón flotante de WhatsApp).
+El sitio se compila en `./dist/` como HTML, CSS y assets estáticos. Sin JavaScript en el bundle del cliente, excepto dos scripts ligeros (menú móvil).
 
 Configurar la URL real del sitio en `astro.config.mjs` (actualmente `https://talentosinfronteras.example.org`).
 

@@ -10,7 +10,7 @@ La landing debe **adaptar y mejorar** el diseño de referencia — no copiarlo p
 
 - Se construye la landing completa en `src/pages/index.astro`, descompuesta en componentes Astro por sección, siguiendo la estructura del diseño de referencia:
   1. Header/nav con anclas y CTA "Regístrate" (menú móvil incluido)
-  2. Hero con foto, titular "Cada trayecto merece una oportunidad" y CTAs (registro + WhatsApp)
+  2. Hero con foto, titular "Cada trayecto merece una oportunidad" y CTAs (registro)
   3. Franja de convocatoria (elegibilidad resumida)
   4. "¿Es para ti?" — 3 tarjetas de audiencia + listado de municipios
   5. "Un camino completo hacia el empleo" — ruta de 4 pasos (timeline)
@@ -19,12 +19,11 @@ La landing debe **adaptar y mejorar** el diseño de referencia — no copiarlo p
   8. "¿Buscas talento comprometido?" — sección para empresas aliadas
   9. Inscripción — formulario embebido de Zoho (placeholder configurable hasta tener la URL real)
   10. FAQ — acordeón accesible con las 4 preguntas del diseño
-  11. Banda de contacto por WhatsApp + footer con logos de aliados
+  11. Footer con logos de aliados
 - Se implementa el sistema de diseño de marca como tokens de Tailwind 4 (`@theme` en `global.css`): paleta (#0B7285, #003399, #F8CA2E, #FF6A4A, #3C3C3B), tipografías (Lemon Milk Bold para títulos con fallback, Montserrat para textos, self-hosted) y componentes base (botones pill, kickers, tarjetas).
 - **Mejoras sobre el diseño de referencia** (el mockup es desktop-only y estático):
   - Diseño responsive mobile-first (el timeline zigzag colapsa a columna, grillas colapsan, menú hamburguesa)
   - HTML semántico y accesible (WCAG 2.1 AA: contraste, foco visible, `details/summary`, alt text, jerarquía de encabezados)
-  - CTAs de WhatsApp funcionales vía deep link `wa.me` (número configurable) y CTA pegajoso en móvil
   - SEO completo: metadatos, Open Graph/Twitter, JSON-LD (`FAQPage`), sitemap, favicon
   - Rendimiento: imágenes optimizadas con `astro:assets`, fuentes con `font-display: swap`, cero JS innecesario (estático puro salvo el menú móvil)
 - Se limpia el scaffold por defecto de Astro (`Welcome.astro`, assets de ejemplo).
@@ -35,7 +34,7 @@ La landing debe **adaptar y mejorar** el diseño de referencia — no copiarlo p
 
 - `brand-theme`: sistema de diseño de marca — tokens de color y tipografía en Tailwind 4, fuentes self-hosted, estilos base de botones/kickers/títulos reutilizables.
 - `landing-page`: estructura, contenido y comportamiento de las secciones de la landing (hero, elegibilidad, audiencia, ruta de 4 pasos, formación, temario, empresas, FAQ, footer) y su navegación por anclas, responsive en todos los breakpoints.
-- `lead-capture`: puntos de conversión — formulario de inscripción Zoho embebido (con placeholder configurable) y CTAs de WhatsApp (deep links configurables, CTA sticky en móvil).
+- `lead-capture`: puntos de conversión — formulario de inscripción Zoho embebido (con placeholder configurable)  (deep links configurables, CTA sticky en móvil).
 - `seo-accessibility`: metadatos SEO/social, datos estructurados, accesibilidad WCAG 2.1 AA y presupuesto de rendimiento (Lighthouse ≥ 90 en móvil).
 
 ### Modified Capabilities
@@ -47,7 +46,6 @@ _(ninguna — no existen specs previas en `openspec/specs/`)_
 - **Código**: `src/pages/index.astro`, `src/layouts/Layout.astro`, nuevos `src/components/*.astro`, `src/styles/global.css`, `src/assets/` (logos, fotos, fuentes), `public/` (favicon, og-image). Se elimina `src/components/Welcome.astro` y assets de ejemplo.
 - **Dependencias**: posibles adiciones menores — `@fontsource` para Montserrat y/o archivos de fuente locales; `@astrojs/sitemap`. Sin backend: el sitio sigue siendo 100% estático.
 - **Insumos pendientes del cliente** (no bloquean la implementación, se configuran como constantes):
-  - Número de WhatsApp oficial del proyecto
   - URL/código de embed del formulario Zoho
   - ~~Archivos de la fuente Lemon Milk Bold~~ — resuelto: ya está en `src/assets/fonts/` (donationware, ver licencia junto a la fuente)
   - Fotos finales y logos en alta resolución (se extraen provisionales de los assets de referencia)

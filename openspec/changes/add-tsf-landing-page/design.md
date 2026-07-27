@@ -16,7 +16,7 @@ El mandato es **adaptar y mejorar**, no clonar. La audiencia objetivo (personas 
 - Landing estática de una página, en español, con las 11 secciones del diseño de referencia y su copy.
 - Mobile-first y responsive real en 360px–1440px+.
 - Sistema de diseño de marca expresado como tokens Tailwind 4 reutilizables.
-- Conversión funcional: anclas de navegación, deep links de WhatsApp, sección de formulario Zoho lista para recibir el embed real.
+- Conversión funcional: anclas de navegación, sección de formulario Zoho lista para recibir el embed real.
 - SEO/social completo y accesibilidad WCAG 2.1 AA.
 - Lighthouse móvil ≥ 90 en Performance/Accessibility/Best Practices/SEO.
 
@@ -32,11 +32,11 @@ El mandato es **adaptar y mejorar**, no clonar. La audiencia objetivo (personas 
 
 ### D1 — Un componente Astro por sección, página única
 
-`src/pages/index.astro` compone ~12 componentes (`Header`, `Hero`, `EligibilityBar`, `Audience`, `ProgramSteps`, `Training`, `Curriculum`, `Companies`, `Registration`, `Faq`, `WhatsAppBand`, `Footer`) bajo `src/layouts/Layout.astro`. Alternativa considerada: todo inline en `index.astro` (como el mockup) — descartada por mantenibilidad y para poder iterar sección por sección.
+`src/pages/index.astro` compone ~12 componentes (`Header`, `Hero`, `EligibilityBar`, `Audience`, `ProgramSteps`, `Training`, `Curriculum`, `Companies`, `Registration`, `Faq`, `Footer`) bajo `src/layouts/Layout.astro`. Alternativa considerada: todo inline en `index.astro` (como el mockup) — descartada por mantenibilidad y para poder iterar sección por sección.
 
 ### D2 — Copy y configuración centralizados en `src/data/site.ts`
 
-Textos largos, listados (municipios, temarios de módulos, FAQs) y constantes de conversión (`WHATSAPP_NUMBER`, `WHATSAPP_MESSAGE`, `ZOHO_FORM_URL`) viven en un módulo de datos tipado. Razón: los insumos pendientes (número de WhatsApp, URL de Zoho) se conectan cambiando una constante, y el copy se revisa sin bucear en markup. Alternativa: content collections — sobredimensionado para una sola página.
+Textos largos, listados (municipios, temarios de módulos, FAQs) y constantes de conversión (`ZOHO_FORM_URL`) viven en un módulo de datos tipado. Razón: los insumos pendientes (URL de Zoho) se conectan cambiando una constante, y el copy se revisa sin bucear en markup. Alternativa: content collections — sobredimensionado para una sola página.
 
 ### D3 — Tokens de marca con `@theme` de Tailwind 4
 
@@ -64,13 +64,10 @@ Montserrat (400/600/700/800/900) via `@fontsource-variable/montserrat` o woff2 l
 
 El timeline de 4 pasos (zigzag alternado con línea punteada central) solo existe en ≥`md`; en móvil es una columna con la línea a la izquierda y las tarjetas apiladas — patrón más legible y sin CSS frágil de posicionamiento absoluto. Grillas 3→1 col, hero apila texto sobre imagen, nav colapsa a menú hamburguesa (único JS de la página, `<script>` vanilla inline de Astro; sin framework de islas).
 
-### D6 — WhatsApp como canal primario de conversión secundaria
-
-Todos los CTAs de WhatsApp generan `https://wa.me/<número>?text=<mensaje>` desde las constantes de D2. En móvil se añade un botón flotante/sticky de WhatsApp (mejora sobre el mockup: la audiencia convierte más por chat que por formulario). Mientras no exista número real, los CTAs apuntan a `#inscripcion` (fallback definido en la constante) para no publicar un enlace roto.
 
 ### D7 — Zoho como embed diferido con placeholder honesto
 
-`Registration.astro` renderiza el iframe de Zoho solo si `ZOHO_FORM_URL` está definido; si no, muestra una tarjeta "próximamente" con CTA alternativo a WhatsApp. El iframe se carga con `loading="lazy"` y `title` accesible. Razón: no bloquear el lanzamiento por un insumo externo y no fingir un formulario que no envía nada (el mockup dibuja campos falsos).
+`Registration.astro` renderiza el iframe de Zoho solo si `ZOHO_FORM_URL` está definido El iframe se carga con `loading="lazy"` y `title` accesible. Razón: no bloquear el lanzamiento por un insumo externo y no fingir un formulario que no envía nada (el mockup dibuja campos falsos).
 
 ### D8 — Imágenes por `astro:assets`, hero como `<Image>` con `priority`
 
@@ -88,7 +85,7 @@ Sin JS: acordeón nativo estilizado, primera pregunta abierta por defecto. Acces
 
 Calculando contraste WCAG durante la implementación se encontró que el coral de marca (`#FF6A4A`) sobre blanco, y blanco sobre coral, dan ~2.83:1 — muy por debajo del 4.5:1 exigido por `seo-accessibility` para texto normal (y del propio 3:1 de texto grande). Lo mismo ocurre con el amarillo de marca (`#F8CA2E`) usado como color de texto (1.56:1 sobre blanco). Estos colores fueron diseñados como acentos visuales, no para llevar texto directamente.
 
-Se añadió un token derivado `--color-coral-strong: #B24A34` (≥4.5:1 sobre blanco y sobre el fondo gris claro `#f4f3f0`) para: fondo de `.btn-coral`, fondo de la sección de inscripción, botón flotante de WhatsApp, y como color de texto/acento (`ACCENTS.coral`). El token `--color-coral` original permanece intacto para usos decorativos sin texto encima (bordes superiores de tarjetas). Para amarillo, en vez de inventar un tono "amarillo oscuro" que dejaría de leerse como amarillo, el rol de texto de `ACCENTS.yellow` se reasignó a `ink` (ya usado como su pareja de fondo). Dos grises de Tailwind (`neutral-400`, `neutral-500`) también se oscurecieron a `neutral-600` donde fallaban (2.58:1 y 4.27:1 respectivamente).
+Se añadió un token derivado `--color-coral-strong: #B24A34` (≥4.5:1 sobre blanco y sobre el fondo gris claro `#f4f3f0`) para: fondo de `.btn-coral`, fondo de la sección de inscripción, y como color de texto/acento (`ACCENTS.coral`). El token `--color-coral` original permanece intacto para usos decorativos sin texto encima (bordes superiores de tarjetas). Para amarillo, en vez de inventar un tono "amarillo oscuro" que dejaría de leerse como amarillo, el rol de texto de `ACCENTS.yellow` se reasignó a `ink` (ya usado como su pareja de fondo). Dos grises de Tailwind (`neutral-400`, `neutral-500`) también se oscurecieron a `neutral-600` donde fallaban (2.58:1 y 4.27:1 respectivamente).
 
 Alternativa descartada: mantener los colores de marca exactos y agrandar/oscurecer solo el texto (variar tamaño para calificar como "texto grande" con umbral 3:1) — se descartó porque exigía agrandar el texto de todos los botones del sitio de forma perceptible, un cambio visual mayor para un problema que se resuelve con un solo tono derivado.
 
@@ -97,10 +94,9 @@ Los valores exactos de `brand-theme/spec.md` (`--color-coral: #FF6A4A`, etc.) no
 ## Risks / Trade-offs
 
 - **[Lemon Milk solo tiene mayúsculas y sin acentos garantizados]** → Se usa exclusivamente en títulos uppercase (como indica el manual); cualquier texto con minúsculas o caracteres fuera de su cobertura cae al fallback Montserrat del mismo stack. Verificar en implementación que "¿", "É", "Ú" rendericen bien en los titulares.
-- **[Embed de Zoho es un tercero]** → iframe lazy + placeholder condicional (D7); si Zoho cae o cambia la URL, la página sigue funcionando y el canal WhatsApp queda como respaldo. El iframe puede afectar CLS: se reserva altura fija.
+- **[Embed de Zoho es un tercero]** → iframe lazy + placeholder condicional (D7); si Zoho cae o cambia la URL, la página sigue funcionando. El iframe puede afectar CLS: se reserva altura fija.
 - **[Fotos de referencia en baja resolución / sin derechos confirmados]** → Se usan las del PDF como provisionales marcadas `TODO`; el build no depende de ellas (cualquier imagen del mismo aspect ratio sirve).
 - **[Copy legal/institucional (logos UE/GIZ) tiene reglas de uso]** → El footer replica el orden y la jerarquía del PDF de assets ("Con el apoyo de"); cualquier ajuste es un cambio de assets, no de estructura.
-- **[Número de WhatsApp inexistente al lanzar]** → Fallback a `#inscripcion` (D6) evita enlaces rotos, a costa de un CTA menos directo hasta tener el dato.
 - **[Página única larga en conexiones lentas]** → Presupuesto: HTML+CSS < 100KB comprimidos antes de imágenes; imágenes lazy salvo hero; sin fuentes externas ni JS de framework.
 
 ## Migration Plan
@@ -109,9 +105,9 @@ Proyecto nuevo, sin usuarios previos: se reemplaza el scaffold en una sola PR. R
 
 ## Open Questions
 
-1. **Número de WhatsApp** oficial y mensaje precargado deseado.
-2. **URL/código embed del formulario Zoho** (y campos que incluirá).
-3. **Dominio final** (necesario para `site` en `astro.config.mjs`, canonical y sitemap).
-4. ~~Archivos de Lemon Milk Bold~~ — **Resuelto**: LEMON MILK v5.0 (donationware) ya está en `src/assets/fonts/`. Pendiente solo confirmar si el proyecto quiere hacer la donación voluntaria a MARSNEV.
-5. **Fotos definitivas** con derechos de uso (las del mockup parecen de banco/campaña).
-6. ¿Se requiere **analytics** (GA4, Meta Pixel) y aviso de privacidad/cookies asociado?
+
+1. **URL/código embed del formulario Zoho** (y campos que incluirá).
+2. **Dominio final** (necesario para `site` en `astro.config.mjs`, canonical y sitemap).
+3. ~~Archivos de Lemon Milk Bold~~ — **Resuelto**: LEMON MILK v5.0 (donationware) ya está en `src/assets/fonts/`. Pendiente solo confirmar si el proyecto quiere hacer la donación voluntaria a MARSNEV.
+4. **Fotos definitivas** con derechos de uso (las del mockup parecen de banco/campaña).
+5. ¿Se requiere **analytics** (GA4, Meta Pixel) y aviso de privacidad/cookies asociado? 

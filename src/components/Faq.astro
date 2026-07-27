@@ -1,7 +1,6 @@
 ---
 import Icon from "./Icon.astro";
-import Button from "./Button.astro";
-import { FAQ, whatsappHref } from "../data/site";
+import { FAQ } from "../data/site";
 
 const faqJsonLd = {
   "@context": "https://schema.org",
@@ -24,10 +23,8 @@ const faqJsonLd = {
     <div class="md:sticky md:top-28 md:self-start">
       <p class="kicker text-teal">{FAQ.kicker}</p>
       <h2 class="section-title mt-5 text-teal-deep">{FAQ.title}</h2>
-      <p class="lead mt-5">¿No encuentras tu respuesta? Escríbenos y te ayudamos.</p>
-      <Button href={whatsappHref()} variant="outline-ink" class="mt-6" target="_blank" rel="noopener">
-        Escríbenos por WhatsApp
-      </Button>
+
+
     </div>
 
     <div data-reveal class="animate-slide-up-fade timeline-view animate-range-[entry_0%_cover_30%] flex flex-col gap-3.5">

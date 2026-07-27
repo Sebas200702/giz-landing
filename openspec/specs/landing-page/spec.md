@@ -1,6 +1,10 @@
 # Spec: landing-page
 
-## ADDED Requirements
+## Purpose
+
+Define the structure and components of the single-page landing website, outlining the section order, responsive layouts, navigation anchor behavior, and content module references.
+
+## Requirements
 
 ### Requirement: Página única con todas las secciones
 

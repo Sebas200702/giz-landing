@@ -1,11 +1,13 @@
 ---
 import Icon from "./Icon.astro";
 import Button from "./Button.astro";
-import { COMPANIES, COMPANY_WHATSAPP_MESSAGE, whatsappHref } from "../data/site";
+import { COMPANIES } from "../data/site";
 import { ACCENTS, type Accent } from "../utils/colors";
 ---
 
-<section id="empresas" class="diag wave py-20 text-white sm:py-28" style="--diag-color: var(--color-blue); content-visibility: auto">
+<!-- Sin content-visibility:auto: la contención de pintado que implica recorta
+     el desborde de .diag-fill (la onda de la costura), dejando el borde recto. -->
+<section id="empresas" class="diag wave py-20 text-white sm:py-28" style="--diag-color: var(--color-blue)">
   <div class="diag-fill"></div>
   <!-- Trama de ruta decorativa -->
   <svg class="pointer-events-none absolute inset-0 h-full w-full opacity-[0.14]" viewBox="0 0 1200 500" preserveAspectRatio="xMidYMid slice" aria-hidden="true">
@@ -17,17 +19,7 @@ import { ACCENTS, type Accent } from "../utils/colors";
       <p class="kicker text-yellow">{COMPANIES.kicker}</p>
       <h2 class="section-title mt-5 text-white">{COMPANIES.title}</h2>
       <p class="mt-5 max-w-md text-base leading-relaxed text-white/85">{COMPANIES.paragraph}</p>
-      <Button
-        href={whatsappHref(COMPANY_WHATSAPP_MESSAGE)}
-        variant="coral"
-        class="mt-8"
-        target="_blank"
-        rel="noopener"
-      >
-        {COMPANIES.cta}
-        <Icon name="arrow-right" size={18} />
-      </Button>
-    </div>
+        </div>
 
     <div data-reveal class="animate-fade-in-left timeline-view animate-range-[entry_10%_cover_40%] animate-delay-200 grid grid-cols-2 gap-4">
       {

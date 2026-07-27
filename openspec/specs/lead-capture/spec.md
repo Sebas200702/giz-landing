@@ -1,6 +1,10 @@
 # Spec: lead-capture
 
-## ADDED Requirements
+## Purpose
+
+Define the integration of lead capture mechanisms, registration forms, CTAs, and their central configuration files.
+
+## Requirements
 
 ### Requirement: Configuración central de conversión
 
@@ -8,7 +12,7 @@ Las constantes de conversión (`ZOHO_FORM_URL`, contacto de empresas) SHALL vivi
 
 ### Requirement: Formulario de inscripción Zoho embebido
 
-La sección de inscripción (`#inscripcion`) SHALL embeber el formulario de Zoho vía iframe con `loading="lazy"`, `title` descriptivo y altura reservada que evite saltos de layout (CLS). Si `ZOHO_FORM_URL` no está configurada, la sección SHALL mostrar un estado "inscripciones próximamente"  nunca campos de formulario falsos que no envían datos.
+La sección de inscripción (`#inscripcion`) SHALL embeber el formulario de Zoho vía iframe con `loading="lazy"`, `title` descriptivo y altura reservada que evite saltos de layout (CLS). Si `ZOHO_FORM_URL` no está configurada, la sección SHALL mostrar un estado "inscripciones próximamente" y nunca campos de formulario falsos que no envían datos.
 
 #### Scenario: Formulario configurado
 
@@ -22,7 +26,7 @@ La sección de inscripción (`#inscripcion`) SHALL embeber el formulario de Zoho
 
 ### Requirement: Todos los CTAs conducen a una acción real
 
-Cada botón o CTA de la página SHALL ser un enlace funcional (`<a href>`) hacia un ancla interna  el formulario. La página NO SHALL contener botones decorativos sin destino (como los `<span>` del mockup).
+Cada botón o CTA de la página SHALL ser un enlace funcional (`<a href>`) hacia un ancla interna o el formulario. La página NO SHALL contener botones decorativos sin destino (como los `<span>` del mockup).
 
 #### Scenario: Auditoría de CTAs
 

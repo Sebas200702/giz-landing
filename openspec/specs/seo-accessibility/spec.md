@@ -1,6 +1,10 @@
 # Spec: seo-accessibility
 
-## ADDED Requirements
+## Purpose
+
+Establish search engine optimization (SEO) standards, accessibility (WCAG 2.1 AA) specifications, performance budgets, and social sharing metadata config.
+
+## Requirements
 
 ### Requirement: Metadatos SEO y sociales
 

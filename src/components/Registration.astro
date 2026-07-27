@@ -1,10 +1,9 @@
 ---
 import Icon from "./Icon.astro";
-import Button from "./Button.astro";
-import { REGISTRATION, ZOHO_FORM_URL, whatsappHref } from "../data/site";
+import { REGISTRATION, ZOHO_FORM_URL } from "../data/site";
 ---
 
-<section id="inscripcion" class="diag  py-20 text-center text-white sm:py-28" style="--diag-color: var(--color-coral-strong)">
+<section id="inscripcion" class="diag zigzag py-20 text-center text-white sm:py-28" style="--diag-color: var(--color-coral-strong)">
   <div class="diag-fill"></div>
   <div class="wrap relative max-w-2xl">
     <div data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%]">
@@ -66,9 +65,7 @@ import { REGISTRATION, ZOHO_FORM_URL, whatsappHref } from "../data/site";
             {REGISTRATION.pendingTitle}
           </div>
           <p class="mb-6 text-sm leading-relaxed text-ink-soft">{REGISTRATION.pendingBody}</p>
-          <Button href={whatsappHref()} variant="teal" class="w-full justify-center" target="_blank" rel="noopener">
-            {REGISTRATION.pendingCta}
-          </Button>
+
         </div>
       )
     }

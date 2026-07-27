@@ -1,18 +1,8 @@
 // Configuración central de conversión. Cambiar aquí conecta toda la página.
-export const WHATSAPP_NUMBER: string = ""; // ej: "573001234567" (sin +, sin espacios)
-export const WHATSAPP_MESSAGE =
-  "Hola, quiero más información sobre Talento Sin Fronteras.";
-export const COMPANY_WHATSAPP_MESSAGE =
-  "Hola, quiero registrar mi empresa como aliada de Talento Sin Fronteras.";
+
 export const ZOHO_FORM_URL =
   "https://forms.zohopublic.com/fundacioncolombiaincluyen1/form/RegistroGiz/formperma/oC5vPstkpZxfKVxb8ZPLuADTvnIvuZ14OCRLif6amrU";
 
-/** Genera un deep link de WhatsApp, o cae a #inscripcion si aún no hay número. */
-export function whatsappHref(message: string = WHATSAPP_MESSAGE): string {
-  if (!WHATSAPP_NUMBER) return "#inscripcion";
-  const digits = WHATSAPP_NUMBER.replace(/[^\d]/g, "");
-  return `https://wa.me/${digits}?text=${encodeURIComponent(message)}`;
-}
 
 export const SITE = {
   name: "Talento Sin Fronteras",
@@ -117,10 +107,9 @@ export const TRAINING = {
   kicker: "La formación",
   title: "Estudia 100% virtual, a tu ritmo",
   paragraph:
-    "Recibes el acceso a la plataforma directamente en tu WhatsApp. Estudia desde tu celular, a la hora que puedas, y sigue con tus cosas mientras avanzas hacia un mejor empleo. Sin desplazarte y sin dejar de lado tu día a día.",
+    "Estudia desde tu celular, a la hora que puedas, y sigue con tus cosas mientras avanzas hacia un mejor empleo. Sin desplazarte y sin dejar de lado tu día a día.",
   checklist: [
     "100% virtual, sin desplazarte",
-    "El acceso te llega por WhatsApp",
     "Estudia a tu ritmo, cuando quieras",
     "Con certificación al finalizar",
   ],
@@ -211,7 +200,6 @@ export const CURRICULUM = {
   ],
   chips: [
     "100% virtual desde tu celular",
-    "Acceso por WhatsApp",
     "Estudia a tu ritmo",
     "Certificación al finalizar",
   ],
@@ -243,10 +231,7 @@ export const REGISTRATION = {
   kicker: "Inscripción",
   title: "Empieza tu nuevo comienzo hoy",
   paragraph: "Completa el formulario para inscribirte en el proyecto.",
-  pendingTitle: "Inscripciones próximamente",
-  pendingBody:
-    "Estamos activando el formulario de inscripción. Mientras tanto, escríbenos por WhatsApp y te ayudamos a empezar tu proceso.",
-  pendingCta: "Escríbenos por WhatsApp",
+
 };
 
 export const FAQ = {
@@ -271,13 +256,7 @@ export const FAQ = {
     {
       question: "¿Cómo me inscribo?",
       answer:
-        "Completa el formulario de esta página o escríbenos por WhatsApp y te guiamos paso a paso.",
+        "Completa el formulario de esta página para poder acceder a la formación.",
     },
   ],
-};
-
-export const WHATSAPP_BAND = {
-  title: "¿Tienes dudas? Escríbenos",
-  subtitle: "Te respondemos por WhatsApp",
-  cta: "Chatear por WhatsApp",
 };
