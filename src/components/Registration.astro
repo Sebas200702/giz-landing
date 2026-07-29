@@ -1,151 +1,81 @@
 ---
 import Icon from "./Icon.astro";
+import Button from "./Button.astro";
 import { REGISTRATION, ZOHO_FORM_URL } from "../data/site";
 ---
 
-<section id="inscripcion" class="diag zigzag py-20 text-center text-white sm:py-28" style="--diag-color: var(--color-coral-strong)">
+<section id="inscripcion" class="diag py-20 text-center text-white sm:py-28" style="--diag-color: var(--color-coral-strong)">
   <div class="diag-fill"></div>
+
+
+
   <div class="wrap relative max-w-2xl">
     <div data-reveal class="animate-fade-in-up timeline-view animate-range-[entry_0%_cover_30%]">
-      <span class="mx-auto mb-6 flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15">
-        <Icon name="map-pin" size={26} />
-      </span>
-      <p class="kicker justify-center text-white/90 before:hidden">{REGISTRATION.kicker}</p>
-      <h2 class="section-title mt-4 text-white">{REGISTRATION.title}</h2>
-      <p class="mx-auto mt-4 max-w-md text-base leading-relaxed text-white/90">{REGISTRATION.paragraph}</p>
+      <p class="kicker text-yellow justify-center before:bg-yellow">{REGISTRATION.kicker}</p>
+      <h2 class="section-title mt-5 text-white">{REGISTRATION.title}</h2>
+      <p class="mx-auto mt-4 max-w-md text-base leading-relaxed text-white/85">{REGISTRATION.paragraph}</p>
     </div>
 
-    {
-      ZOHO_FORM_URL ? (
-        <div
-          data-reveal
-          class="animate-fade-in-up timeline-view animate-range-[entry_10%_cover_40%] animate-delay-150 mx-auto mt-10 w-full overflow-hidden rounded-2xl bg-white shadow-2xl"
-        >
-          {/* Carga diferida: el iframe arranca SIN src (la URL viaja en data-src)
-              y solo se asigna cuando la sección se acerca al viewport. Evita que
-              el embed pesado de Zoho ejecute su JS en la carga inicial, que era
-              el origen de los ~400 ms de TBT. La altura queda reservada (h-205)
-              para no generar layout shift al insertarse. */}
-          <div id="zoho-embed" data-src={ZOHO_FORM_URL} class="relative h-205 w-full">
-            <div
-              id="zoho-placeholder"
-              class="absolute inset-0 flex flex-col items-center justify-center gap-3 text-ink-soft"
-            >
-              <span
-                class="h-8 w-8 animate-spin rounded-full border-2 border-ink/15 border-t-teal"
-                aria-hidden="true"
-              />
-              <span class="text-sm font-semibold">Cargando formulario de inscripción…</span>
-            </div>
-            <iframe
-              id="ziframe_545227"
-              title="Formulario de inscripción — Talento Sin Fronteras"
-              aria-label="Registro Giz"
-              loading="lazy"
-              class="relative block h-full w-full border-0 opacity-0 transition-opacity duration-500"
-            />
-          </div>
-          {/* Sin JavaScript el observer no corre: servimos el formulario directo. */}
-          <noscript>
-            <iframe
-              src={ZOHO_FORM_URL}
-              title="Formulario de inscripción — Talento Sin Fronteras"
-              aria-label="Registro Giz"
-              class="block h-205 w-full border-0"
-            />
-          </noscript>
+    <!-- Tarjeta de CTA coincidente con la línea gráfica (estilo Pase de Abordaje / Training) -->
+    <div
+      data-reveal
+      class="animate-fade-in-up timeline-view animate-range-[entry_10%_cover_40%] animate-delay-150 relative mx-auto mt-10 max-w-xl rounded-2xl bg-white p-7 text-ink shadow-2xl text-left"
+    >
+      <div class="flex items-center justify-between border-b border-dashed border-ink/15 pb-5">
+        <div class="flex items-center gap-2 text-[0.7rem] font-extrabold uppercase tracking-[0.14em] text-ink-soft">
+          <Icon name="user-check" size={16} class="text-coral-strong" />
+          Proceso de Registro
         </div>
-      ) : (
-        <div
-          data-reveal
-          class="animate-fade-in-up timeline-view animate-range-[entry_10%_cover_40%] animate-delay-150 mx-auto mt-10 max-w-[520px] rounded-2xl bg-white p-8 text-left text-ink shadow-2xl"
-        >
-          <div class="mb-2 flex items-center gap-2 text-lg font-extrabold text-ink">
-            <Icon name="clock" size={20} class="text-coral-strong" />
-            {REGISTRATION.pendingTitle}
-          </div>
-          <p class="mb-6 text-sm leading-relaxed text-ink-soft">{REGISTRATION.pendingBody}</p>
+        <span class="inline-flex items-center rounded-full bg-coral/10 px-3 py-1 text-xs font-bold text-coral-strong">
+          100% Gratuito
+        </span>
+      </div>
 
-        </div>
-      )
-    }
+      <ul class="mt-6 flex flex-col gap-5">
+        <li class="flex items-start gap-3.5">
+          <span class="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-coral-strong text-white mt-0.5">
+            <Icon name="clock" size={13} strokeWidth={3} />
+          </span>
+          <div>
+            <div class="text-sm font-extrabold text-ink">Registro rápido y sencillo</div>
+            <div class="text-xs leading-snug text-ink-soft mt-0.5">Completa el formulario en línea en menos de 5 minutos desde tu celular.</div>
+          </div>
+        </li>
+        <li class="flex items-start gap-3.5">
+          <span class="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-coral-strong text-white mt-0.5">
+            <Icon name="check-square" size={13} strokeWidth={3} />
+          </span>
+          <div>
+            <div class="text-sm font-extrabold text-ink">Sin intermediarios</div>
+            <div class="text-xs leading-snug text-ink-soft mt-0.5">Tu postulación va directa a nuestro equipo de orientación laboral.</div>
+          </div>
+        </li>
+        <li class="flex items-start gap-3.5">
+          <span class="flex h-6 w-6 flex-none items-center justify-center rounded-full bg-coral-strong text-white mt-0.5">
+            <Icon name="map-pin" size={13} strokeWidth={3} />
+          </span>
+          <div>
+            <div class="text-sm font-extrabold text-ink">Bogotá, Cúcuta y Bucaramanga</div>
+            <div class="text-xs leading-snug text-ink-soft mt-0.5">Válido para personas residentes en estas tres ciudades y sus áreas metropolitanas.</div>
+          </div>
+        </li>
+      </ul>
+
+      <div class="mt-8 flex flex-col items-center gap-3.5">
+        <Button
+          href={ZOHO_FORM_URL}
+          variant="coral"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="w-full justify-center text-sm font-extrabold tracking-wider"
+        >
+          {REGISTRATION.cta}
+          <Icon name="arrow-right" size={16} />
+        </Button>
+        <span class="text-[0.7rem] font-bold text-ink-soft uppercase tracking-wider text-center w-full block">
+          Se abrirá en una nueva pestaña segura
+        </span>
+      </div>
+    </div>
   </div>
 </section>
-
-<script>
-  (function () {
-    const wrap = document.getElementById("zoho-embed");
-    const frame = document.getElementById("ziframe_545227") as HTMLIFrameElement | null;
-    const placeholder = document.getElementById("zoho-placeholder");
-    const rawSrc = wrap?.dataset.src;
-    if (!wrap || !frame || !rawSrc) return;
-
-    // Añade el referrername que Zoho usa para atribuir el origen del registro.
-    function withReferrer(src: string): string {
-      if (/[?&]referrername=/.test(src)) return src;
-      let rfr = window.location.href;
-      try {
-        rfr =
-          window.self !== window.top
-            ? window.top!.location.href
-            : /^https?:\/\/[\w.-]+\.[a-zA-Z]{2,}/i.test(rfr)
-              ? rfr
-              : "";
-      } catch (e) {}
-      if (!rfr) return src;
-      if (rfr.length > 1800) {
-        const q = rfr.indexOf("?");
-        rfr = q > -1 ? rfr.substring(0, q) : rfr;
-        if (rfr.length > 1800) rfr = rfr.substring(0, 1800);
-      }
-      return src + (src.indexOf("?") > 0 ? "&" : "?") + "referrername=" + encodeURIComponent(rfr);
-    }
-
-    let loaded = false;
-    function load() {
-      if (loaded) return;
-      loaded = true;
-      frame!.addEventListener("load", () => {
-        frame!.style.opacity = "1";
-        placeholder?.remove();
-      });
-      frame!.src = withReferrer(rawSrc!);
-    }
-
-    // El embed solo se carga cuando la sección entra en juego. Con 400px de
-    // margen empieza a cargar justo antes de ser visible, sin fricción para el
-    // usuario, pero fuera de la ventana en la que Lighthouse mide el TBT.
-    if ("IntersectionObserver" in window) {
-      const io = new IntersectionObserver(
-        (entries) => {
-          if (entries.some((e) => e.isIntersecting)) {
-            io.disconnect();
-            load();
-          }
-        },
-        { rootMargin: "400px 0px" },
-      );
-      io.observe(wrap);
-    } else {
-      load();
-    }
-
-    // Evita que el iframe (Zoho Forms) bloquee bf-cache: la página embebida
-    // nunca llega a "complete", lo que impide que el navegador almacene la
-    // página en el bf-cache y degrade las navegaciones atrás/adelante.
-    // Al ocultar la página limpiamos el src para que el navegador pueda
-    // congelar el documento; al restaurarla lo recargamos si hace falta.
-    let bfCacheSrc = rawSrc;
-    window.addEventListener("pagehide", () => {
-      if (frame!.src) {
-        bfCacheSrc = frame!.src;
-        frame!.src = "";
-      }
-    });
-    window.addEventListener("pageshow", (e) => {
-      if (e.persisted && bfCacheSrc) {
-        frame!.src = bfCacheSrc;
-      }
-    });
-  })();
-</script>

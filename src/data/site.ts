@@ -205,12 +205,16 @@ export const CURRICULUM = {
   ],
 };
 
+export const ZOHO_COMPANY_FORM_URL =
+  "https://zfrmz.com/cVYNLvxlL06MKPiSdZ3F";
+
 export const COMPANIES = {
   kicker: "Para empresas",
   title: "¿Buscas talento comprometido?",
   paragraph:
     "Súmate como empresa aliada y conecta con personas formadas y motivadas, listas para aportar a tu equipo. Al mismo tiempo, generas impacto social real en tu región.",
   cta: "Quiero ser empresa aliada",
+  href: ZOHO_COMPANY_FORM_URL,
   benefits: [
     { icon: "users", color: "yellow", label: "Talento formado y motivado" },
     {
@@ -228,10 +232,10 @@ export const COMPANIES = {
 };
 
 export const REGISTRATION = {
-  kicker: "Inscripción",
+  kicker: "Convocatoria abierta",
   title: "Empieza tu nuevo comienzo hoy",
-  paragraph: "Completa el formulario para inscribirte en el proyecto.",
-
+  paragraph: "Completa el formulario de inscripción en línea de forma rápida para iniciar tu proceso. El registro te tomará menos de 5 minutos.",
+  cta: "Inscribirme ahora",
 };
 
 export const FAQ = {
@@ -256,7 +260,7 @@ export const FAQ = {
     {
       question: "¿Cómo me inscribo?",
       answer:
-        "Completa el formulario de esta página para poder acceder a la formación.",
+        "Haz clic en el botón de registro de esta página para abrir el formulario de Zoho Forms en una nueva pestaña y completar tus datos de forma segura.",
     },
   ],
 };
