@@ -4,19 +4,19 @@ import { defineConfig } from 'astro/config';
 import tailwindcss from '@tailwindcss/vite';
 import sitemap from '@astrojs/sitemap';
 
-// TODO: reemplazar por el dominio final del proyecto (requerido para
-// canonical, Open Graph, sitemap.xml y robots.txt correctos en producción).
-const SITE_URL = 'https://giz-landing.vercel.app/';
+// Dominio final del proyecto: alimenta canonical, Open Graph, sitemap.xml y
+// robots.txt en producción.
+const SITE_URL = 'https://talentosinfronteras.fundacioncolombiaincluyente.org/';
 
 // https://astro.build/config
 export default defineConfig({
   site: SITE_URL,
   integrations: [sitemap()],
-  // Inlina el CSS en el <head> en lugar de servirlo como archivo aparte.
-  // La landing es una sola ruta con ~12 KB gzip de CSS: incrustarlo elimina la
-  // petición que bloquea el render (mejora FCP/LCP) sin coste de caché entre
-  // páginas porque no hay navegación interna.
-  build: { inlineStylesheets: "always" },
+  // El CSS se sirve como archivo aparte (no inline): el HTML así baja de
+  // ~108 KB a ~53 KB (límite recomendado por los audits de SEO/rendimiento),
+  // y el CSS (~12 KB gzip, cacheable) viaja por una única petición que la
+  // mayoría de CDNs sirven con prioridad máxima por ser render-blocking.
+  build: { inlineStylesheets: "never" },
   vite: {
     plugins: [tailwindcss()],
     server: {

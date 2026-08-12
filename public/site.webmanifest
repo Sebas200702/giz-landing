@@ -1,0 +1,29 @@
+{
+  "name": "Talento Sin Fronteras",
+  "short_name": "Talento SF",
+  "description": "Programa gratuito de orientación laboral, formación certificada y conexión con empresas para migrantes y colombianos en Cúcuta, Bucaramanga y Bogotá D.C.",
+  "start_url": "/",
+  "scope": "/",
+  "display": "standalone",
+  "background_color": "#faf6ee",
+  "theme_color": "#073e48",
+  "lang": "es",
+  "icons": [
+    {
+      "src": "/favicon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon-32.png",
+      "sizes": "32x32",
+      "type": "image/png"
+    }
+  ]
+}
