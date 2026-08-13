@@ -1,12 +1,11 @@
 ---
-import { SITE } from "../data/site";
+import { SITE, FAQ } from "../data/site";
 
 // Datos estructurados a nivel de sitio (JSON-LD). Las URLs absolutas salen de
 // `site` en astro.config.mjs — al cambiar el dominio se actualizan solas.
 const siteURL = Astro.site ?? Astro.url;
 const pageURL = new URL(Astro.url.pathname, siteURL).href;
 const logoURL = new URL("/favicon-512.png", siteURL).href;
-const imageURL = new URL("/og-image.jpg", siteURL).href;
 
 const organization = {
   "@type": "Organization",
@@ -21,6 +20,34 @@ const website = {
   name: SITE.name,
   url: siteURL?.href,
   inLanguage: "es-CO",
+};
+
+// Esquema de Programa Educativo y Ocupacional para motores con IA y búsquedas de empleabilidad
+const educationalProgram = {
+  "@type": "EducationalOccupationalProgram",
+  name: SITE.name,
+  description: SITE.description,
+  url: pageURL,
+  provider: {
+    "@type": "Organization",
+    name: "Fundación Colombia Incluyente",
+    url: siteURL?.href,
+  },
+  educationalProgramMode: "online",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "COP",
+    category: "Gratuito",
+  },
+  areaServed: [
+    "Cúcuta",
+    "Bucaramanga",
+    "Bogotá D.C.",
+    "Norte de Santander",
+    "Santander",
+    "Cundinamarca",
+  ],
 };
 
 // La formación gratuita de 60 h encaja en el tipo Course de schema.org.
@@ -50,7 +77,20 @@ const course = {
   },
 };
 
-const graph = [organization, website, course];
+// Esquema FAQPage para activar Rich Snippets con las preguntas frecuentes en Google
+const faqPage = {
+  "@type": "FAQPage",
+  mainEntity: FAQ.items.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: {
+      "@type": "Answer",
+      text: item.answer,
+    },
+  })),
+};
+
+const graph = [organization, website, educationalProgram, course, faqPage];
 ---
 
 <script
@@ -58,3 +98,4 @@ const graph = [organization, website, course];
   is:inline
   set:html={JSON.stringify({ "@context": "https://schema.org", "@graph": graph })}
 />
+
