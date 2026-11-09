@@ -1,0 +1,4 @@
+# The image only needs the build output and the nginx config.
+*
+!dist/
+!deploy/nginx.conf
